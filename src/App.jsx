@@ -1,5 +1,9 @@
 import React, { useState } from "react";
 import "./App.css";
+import Description from "./components/Description";
+import Feedback from "./components/Feedback";
+import Options from "./components/Option";
+import Reset from "./components/Reset";
 
 function App() {
   const initialFeedback = {
@@ -25,54 +29,11 @@ function App() {
   };
 
   return (
-    <div className="description">
-      <h1 className="description-title">Sip Happens Café</h1>
-      <p className="description-paragraph">
-        Please leave your feedback about our service by selecting one of the
-        options below.
-      </p>
+    <div className="App">
+      <Description />
       <Feedback onFeedback={handleFeedback} />
       {feedbackGiven && <Reset onReset={resetFeedback} />}
-      {feedbackGiven && <Options options={feedbackTypes}/>}
-      
-    </div>
-  );
-}
-
-function Feedback({ onFeedback }) {
-  return (
-    <div className="option">
-      <button onClick={() => onFeedback("good")}>Good</button>
-      <button onClick={() => onFeedback("neutral")}>Neutral</button>
-      <button onClick={() => onFeedback("bad")}>Bad</button>
-    </div>
-  );
-}
-
-function Options({ options }) {
-
-  const totalFeedback = options.good + options.bad + options.neutral;
-
-  const positiveFeedback = Math.round((options.good / totalFeedback) * 100);
-
-  return (
-    <div>
-      <h2>Statistics</h2>
-      {totalFeedback === 0 && <p>No feedback yet</p>}
-      <p>Good: {options.good}</p>
-      <p>Neutral: {options.neutral}</p>
-      <p>Bad: {options.bad}</p>
-      <p>Total: {totalFeedback}</p>
-      <p>Positive: {positiveFeedback}</p>
-      
-    </div>
-  );
-}
-
-function Reset({ onReset }) {
-  return (
-    <div>
-      <button onClick={onReset}>Reset Feedback</button>
+      {feedbackGiven && <Options options={feedbackTypes} />}
     </div>
   );
 }
