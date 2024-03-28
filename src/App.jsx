@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import "./App.css";
-import Description from "./components/Description";
-import Feedback from "./components/Feedback";
-import Options from "./components/Option";
-import Reset from "./components/Reset";
+import Description from "./components/Description/Description";
+import Feedback from "./components/Feedback/Feedback";
+import Options from "./components/Options/Option";
+import Reset from "./components/Reset/Reset";
 
 function App() {
   const initialFeedback = {
