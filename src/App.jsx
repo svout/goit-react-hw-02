@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./App.css";
 import Description from "./components/Description/Description";
 import Feedback from "./components/Feedback/Feedback";
 import Options from "./components/Options/Option";
 import Reset from "./components/Reset/Reset";
+import Notification from "./components/Notification/Notification";
 
 function App() {
   const initialFeedback = {
@@ -12,28 +13,41 @@ function App() {
     bad: 0,
   };
 
-  const [feedbackTypes, setFeedbackTypes] = useState(initialFeedback);
-  const [feedbackGiven, setFeedbackGiven] = useState(false);
+  const storedFeedback = JSON.parse(localStorage.getItem("feedback"));
+  const [feedbackTypes, setFeedbackTypes] = useState(
+    storedFeedback || initialFeedback
+  );
+
+  const totalReviews = feedbackTypes.good + feedbackTypes.neutral + feedbackTypes.bad;
+  const positivePercentage = Math.round((feedbackTypes.good / totalReviews) * 100) || 0;
+
+  useEffect(() => {
+    localStorage.setItem("feedback", JSON.stringify(feedbackTypes));
+  }, [feedbackTypes]);
 
   const handleFeedback = (type) => {
     setFeedbackTypes((prevState) => ({
       ...prevState,
       [type]: prevState[type] + 1,
     }));
-    setFeedbackGiven(true);
   };
 
   const resetFeedback = () => {
     setFeedbackTypes(initialFeedback);
-    setFeedbackGiven(false);
   };
 
   return (
     <div className="App">
       <Description />
       <Feedback onFeedback={handleFeedback} />
-      {feedbackGiven && <Reset onReset={resetFeedback} />}
-      {feedbackGiven && <Options options={feedbackTypes} />}
+      {totalReviews > 0 ? (
+        <>
+          <Reset onReset={resetFeedback} />
+          <Options options={feedbackTypes} />
+        </>
+      ) : (
+        <Notification message="No feedback statistics available." />
+      )}
     </div>
   );
 }

@@ -14,7 +14,7 @@ function Options({ options }) {
         <p>Neutral: {options.neutral}</p>
         <p>Bad: {options.bad}</p>
         <p>Total: {totalFeedback}</p>
-        <p>Positive: {positiveFeedback}</p>
+        <p>Positive: {positiveFeedback} %</p>
         
       </div>
     );
